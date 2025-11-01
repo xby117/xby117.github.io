@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>联系我</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: "Arial", sans-serif; background: #f5f5f5; color: #333; }
+        .navbar { background: #4a6cf7; padding: 15px 20px; border-radius: 0 0 20px 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .logo { color: white; font-size: 22px; font-weight: bold; }
+        .nav-links { display: flex; gap: 25px; }
+        .nav-links a { color: white; text-decoration: none; padding: 8px 12px; border-radius: 15px; transition: background 0.3s; }
+        .nav-links a:hover { background: rgba(255,255,255,0.2); }
+        /* 联系我内容 */
+        .contact-content { max-width: 600px; margin: 50px auto; padding: 0 20px; }
+        .contact-card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .contact-card h2 { font-size: 28px; color: #4a6cf7; margin-bottom: 30px; text-align: center; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px; }
+        .contact-item { margin-bottom: 25px; padding: 15px; background: #f9f9f9; border-radius: 15px; }
+        .contact-info h3 { font-size: 18px; margin-bottom: 5px; }
+        .contact-info p { font-size: 16px; color: #666; }
+        .email-link { color: #4a6cf7; text-decoration: none; cursor: pointer; font-weight: bold; padding: 2px 5px; border-radius: 5px; transition: background 0.2s; }
+        .email-link:hover { background: rgba(74,108,247,0.1); }
+        .github-link { color: #4a6cf7; text-decoration: none; font-weight: bold; padding: 2px 5px; border-radius: 5px; transition: background 0.2s; }
+        .github-link:hover { background: rgba(74,108,247,0.1); }
+        /* 复制成功弹窗 */
+        .copy-toast { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.8); color: white; padding: 15px 30px; border-radius: 10px; font-size: 16px; opacity: 0; pointer-events: none; transition: opacity 0.3s; z-index: 9999; }
+        .copy-toast.show { opacity: 1; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">我的主页</div>
+            <div class="nav-links">
+                <a href="index.html">首页</a>
+                <a href="contact.html">联系我</a>
+                <a href="download.html">资源下载</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="contact-content">
+        <div class="contact-card">
+            <h2>联系我</h2>
+            <!-- 邮箱联系 -->
+            <div class="contact-item">
+                <div class="contact-info">
+                    <h3>电子邮箱</h3>
+                    <p>点击复制：<span class="email-link" id="email">your-email@example.com</span></p>
+                    <!-- 替换为你的实际邮箱 -->
+                </div>
+            </div>
+            <!-- GitHub联系 -->
+            <div class="contact-item">
+                <div class="contact-info">
+                    <h3>GitHub</h3>
+                    <p>点击访问：<a href="https://github.com/your-username" target="_blank" class="github-link">github.com/your-username</a></p>
+                    <!-- 替换为你的实际GitHub链接，target="_blank"表示新窗口打开 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 复制弹窗 -->
+    <div class="copy-toast" id="copyToast">复制成功！</div>
+
+    <script>
+        // 修复邮箱复制功能（兼容手机端）
+        const emailElement = document.getElementById('email');
+        const copyToast = document.getElementById('copyToast');
+        const email = emailElement.textContent.trim();
+
+        emailElement.addEventListener('click', async () => {
+            try {
+                // 优先使用Clipboard API（现代浏览器）
+                await navigator.clipboard.writeText(email);
+                showToast();
+            } catch (err) {
+                // 降级方案：创建临时输入框复制
+                const tempInput = document.createElement('input');
+                tempInput.value = email;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempInput);
+                showToast();
+            }
+        });
+
+        // 显示弹窗并自动关闭
+        function showToast() {
+            copyToast.classList.add('show');
+            setTimeout(() => {
+                copyToast.classList.remove('show');
+            }, 1500);
+        }
+    </script>
+</body>
+</html>

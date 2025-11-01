@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>资源下载</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: "Arial", sans-serif; background: #f5f5f5; color: #333; }
+        .navbar { background: #4a6cf7; padding: 15px 20px; border-radius: 0 0 20px 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .logo { color: white; font-size: 22px; font-weight: bold; }
+        .nav-links { display: flex; gap: 25px; }
+        .nav-links a { color: white; text-decoration: none; padding: 8px 12px; border-radius: 15px; transition: background 0.3s; }
+        .nav-links a:hover { background: rgba(255,255,255,0.2); }
+        /* 下载内容 */
+        .download-content { max-width: 800px; margin: 50px auto; padding: 0 20px; }
+        .download-title { text-align: center; font-size: 32px; color: #4a6cf7; margin-bottom: 40px; }
+        .download-list { display: flex; flex-direction: column; gap: 20px; }
+        .download-item { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; }
+        .download-info h3 { font-size: 20px; margin-bottom: 5px; color: #333; }
+        .download-info p { font-size: 14px; color: #666; }
+        .download-btn { padding: 10px 20px; background: #4a6cf7; color: white; text-decoration: none; border-radius: 15px; font-weight: bold; transition: background 0.3s; }
+        .download-btn:hover { background: #3a5edb; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">我的主页</div>
+            <div class="nav-links">
+                <a href="index.html">首页</a>
+                <a href="contact.html">联系我</a>
+                <a href="download.html">资源下载</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="download-content">
+        <h2 class="download-title">资源下载</h2>
+        <div class="download-list">
+            <!-- APK下载项1 -->
+            <div class="download-item">
+                <div class="download-info">
+                    <h3>工具类APK - 实用工具箱</h3>
+                    <p>版本：v1.0 | 大小：15MB | 功能：包含多种实用工具</p>
+                </div>
+                <!-- 替换href为你的APK文件下载链接（GitHub仓库中上传APK后复制链接） -->
+                <a href="https://example.com/tool-apk" class="download-btn">立即下载</a>
+            </div>
+            <!-- APK下载项2 -->
+            <div class="download-item">
+                <div class="download-info">
+                    <h3>娱乐类APK - 趣味小游戏</h3>
+                    <p>版本：v2.1 | 大小：28MB | 功能：休闲益智小游戏</p>
+                </div>
+                <a href="https://example.com/game-apk" class="download-btn">立即下载</a>
+            </div>
+            <!-- 可添加更多下载项 -->
+            <div class="download-item">
+                <div class="download-info">
+                    <h3>其他资源 - 文档/工具包</h3>
+                    <p>版本：最新版 | 大小：5MB | 格式：ZIP压缩包</p>
+                </div>
+                <a href="https://example.com/other-resource" class="download-btn">立即下载</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
