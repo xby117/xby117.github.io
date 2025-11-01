@@ -13,7 +13,6 @@
         .nav-links { display: flex; gap: 25px; }
         .nav-links a { color: white; text-decoration: none; padding: 8px 12px; border-radius: 15px; transition: background 0.3s; }
         .nav-links a:hover { background: rgba(255,255,255,0.2); }
-        /* 下载内容 */
         .download-content { max-width: 800px; margin: 50px auto; padding: 0 20px; }
         .download-title { text-align: center; font-size: 32px; color: #4a6cf7; margin-bottom: 40px; }
         .download-list { display: flex; flex-direction: column; gap: 20px; }
@@ -22,6 +21,10 @@
         .download-info p { font-size: 14px; color: #666; }
         .download-btn { padding: 10px 20px; background: #4a6cf7; color: white; text-decoration: none; border-radius: 15px; font-weight: bold; transition: background 0.3s; }
         .download-btn:hover { background: #3a5edb; }
+        @media (max-width: 500px) {
+            .download-item { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .download-btn { width: 100%; text-align: center; padding: 12px 0; }
+        }
     </style>
 </head>
 <body>
@@ -39,30 +42,47 @@
     <div class="download-content">
         <h2 class="download-title">资源下载</h2>
         <div class="download-list">
-            <!-- APK下载项1 -->
             <div class="download-item">
                 <div class="download-info">
                     <h3>工具类APK - 实用工具箱</h3>
-                    <p>版本：v1.0 | 大小：15MB | 功能：包含多种实用工具</p>
+                    <p>版本：v1.0 | 大小：15MB | 功能：文件管理、二维码生成、单位换算</p>
                 </div>
-                <!-- 替换href为你的APK文件下载链接（GitHub仓库中上传APK后复制链接） -->
-                <a href="https://example.com/tool-apk" class="download-btn">立即下载</a>
+                <a href="https://github.com/你的用户名/你的仓库名/raw/main/APK/toolbox.apk" class="download-btn">立即下载</a>
             </div>
-            <!-- APK下载项2 -->
             <div class="download-item">
                 <div class="download-info">
-                    <h3>娱乐类APK - 趣味小游戏</h3>
-                    <p>版本：v2.1 | 大小：28MB | 功能：休闲益智小游戏</p>
+                    <h3>娱乐类APK - 趣味小游戏合集</h3>
+                    <p>版本：v2.1 | 大小：28MB | 功能：消消乐、五子棋、贪吃蛇</p>
                 </div>
-                <a href="https://example.com/game-apk" class="download-btn">立即下载</a>
+                <a href="https://github.com/你的用户名/你的仓库名/raw/main/APK/games.apk" class="download-btn">立即下载</a>
             </div>
-            <!-- 可添加更多下载项 -->
             <div class="download-item">
                 <div class="download-info">
-                    <h3>其他资源 - 文档/工具包</h3>
-                    <p>版本：最新版 | 大小：5MB | 格式：ZIP压缩包</p>
+                    <h3>效率类APK - 笔记备忘录</h3>
+                    <p>版本：v3.2 | 大小：12MB | 功能：离线编辑、云端同步、密码锁</p>
                 </div>
-                <a href="https://example.com/other-resource" class="download-btn">立即下载</a>
+                <a href="https://github.com/你的用户名/你的仓库名/raw/main/APK/notes.apk" class="download-btn">立即下载</a>
+            </div>
+            <div class="download-item">
+                <div class="download-info">
+                    <h3>学习类APK - 编程教程助手</h3>
+                    <p>版本：v1.5 | 大小：22MB | 功能：语法查询、代码片段、离线教程</p>
+                </div>
+                <a href="https://github.com/你的用户名/你的仓库名/raw/main/APK/program.apk" class="download-btn">立即下载</a>
+            </div>
+            <div class="download-item">
+                <div class="download-info">
+                    <h3>美化类APK - 壁纸工具箱</h3>
+                    <p>版本：v2.0 | 大小：18MB | 功能：高清壁纸、动态锁屏、主题切换</p>
+                </div>
+                <a href="https://github.com/你的用户名/你的仓库名/raw/main/APK/wallpaper.apk" class="download-btn">立即下载</a>
+            </div>
+            <div class="download-item">
+                <div class="download-info">
+                    <h3>系统类APK - 手机清理大师</h3>
+                    <p>版本：v4.3 | 大小：10MB | 功能：垃圾清理、内存加速、电池优化</p>
+                </div>
+                <a href="https://github.com/你的用户名/你的仓库名/raw/main/APK/cleaner.apk" class="download-btn">立即下载</a>
             </div>
         </div>
     </div>
