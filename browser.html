@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>在线网页浏览器</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: "Arial", sans-serif; background: #f8f9fa; min-height: 100vh; display: flex; flex-direction: column; }
+        .browser-container { flex: 1; max-width: 1200px; margin: 0 auto; width: 100%; padding: 30px; }
+        /* 头部：退出按钮+标题 */
+        .browser-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .exit-btn { padding: 10px 20px; background: #ff4d4f; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: 600; cursor: pointer; transition: all 0.3s; box-shadow: 0 2px 8px rgba(255,77,79,0.3); }
+        .exit-btn:hover { background: #d9363e; transform: translateY(-2px); }
+        .browser-title { font-size: 24px; color: #333; font-weight: 600; }
+        /* 地址栏区域 */
+        .address-bar { display: flex; gap: 10px; margin-bottom: 20px; }
+        #urlInput { flex: 1; padding: 12px 20px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; outline: none; }
+        #urlInput:focus { border-color: #4a6cf7; box-shadow: 0 0 0 2px rgba(74,108,247,0.1); }
+        #goBtn { padding: 12px 24px; background: #4a6cf7; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: background 0.3s; }
+        #goBtn:hover { background: #3a5edb; }
+        /* 知名网站快捷访问 - 图标+文字布局 */
+        .popular-sites { margin-bottom: 20px; }
+        .sites-title { font-size: 18px; color: #666; margin-bottom: 15px; }
+        .sites-list { display: flex; flex-wrap: wrap; gap: 25px; justify-content: center; }
+        .site-item { display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; width: 80px; }
+        .site-icon { width: 60px; height: 60px; border-radius: 50%; background: white; display: flex; align-items: center; justify-content: center; border: 1px solid #ddd; transition: all 0.3s; }
+        .site-icon img { width: 32px; height: 32px; object-fit: contain; }
+        .site-name { font-size: 14px; color: #333; text-align: center; }
+        .site-item:hover .site-icon { border-color: #4a6cf7; background: #f5f9ff; transform: translateY(-3px); }
+        /* 网页显示区域 */
+        .webview-container { width: 100%; height: calc(100vh - 220px); border: 1px solid #ddd; border-radius: 12px; overflow: hidden; background: white; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
+        #webview { width: 100%; height: 100%; border: none; }
+    </style>
+</head>
+<body>
+    <div class="browser-container">
+        <div class="browser-header">
+            <button class="exit-btn" onclick="window.location.href='projects.html'">退出</button>
+            <div class="browser-title">在线网页浏览器</div>
+        </div>
+
+        <!-- 地址栏 -->
+        <div class="address-bar">
+            <input type="text" id="urlInput" placeholder="请输入网址（例如：https://www.baidu.com）" autocomplete="off">
+            <button id="goBtn">访问</button>
+        </div>
+
+        <!-- 知名网站快捷访问（图标+名称） -->
+        <div class="popular-sites">
+            <div class="sites-title">常用网站：</div>
+            <div class="sites-list">
+                <!-- 百度 -->
+                <div class="site-item" data-url="https://www.baidu.com">
+                    <div class="site-icon">
+                        <img src="https://www.baidu.com/favicon.ico" alt="百度图标">
+                    </div>
+                    <div class="site-name">百度</div>
+                </div>
+                <!-- 哔哩哔哩 -->
+                <div class="site-item" data-url="https://www.bilibili.com">
+                    <div class="site-icon">
+                        <img src="https://www.bilibili.com/favicon.ico" alt="B站图标">
+                    </div>
+                    <div class="site-name">哔哩哔哩</div>
+                </div>
+                <!-- 淘宝 -->
+                <div class="site-item" data-url="https://www.taobao.com">
+                    <div class="site-icon">
+                        <img src="https://www.taobao.com/favicon.ico" alt="淘宝图标">
+                    </div>
+                    <div class="site-name">淘宝</div>
+                </div>
+                <!-- 爱奇艺（替换抖音） -->
+                <div class="site-item" data-url="https://www.iqiyi.com">
+                    <div class="site-icon">
+                        <img src="https://www.iqiyi.com/favicon.ico" alt="爱奇艺图标">
+                    </div>
+                    <div class="site-name">爱奇艺</div>
+                </div>
+                <!-- 微博 -->
+                <div class="site-item" data-url="https://www.weibo.com">
+                    <div class="site-icon">
+                        <img src="https://www.weibo.com/favicon.ico" alt="微博图标">
+                    </div>
+                    <div class="site-name">微博</div>
+                </div>
+                <!-- 网易 -->
+                <div class="site-item" data-url="https://www.163.com">
+                    <div class="site-icon">
+                        <img src="https://www.163.com/favicon.ico" alt="网易图标">
+                    </div>
+                    <div class="site-name">网易</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 网页显示容器 -->
+        <div class="webview-container">
+            <iframe id="webview" src="https://www.baidu.com"></iframe>
+        </div>
+    </div>
+
+    <script>
+        // 核心功能：地址栏访问+快捷网站打开
+        const urlInput = document.getElementById('urlInput');
+        const goBtn = document.getElementById('goBtn');
+        const webview = document.getElementById('webview');
+        const siteItems = document.querySelectorAll('.site-item');
+
+        // 点击访问按钮
+        goBtn.addEventListener('click', () => {
+            let url = urlInput.value.trim();
+            if (!url) return;
+            // 补全协议（如果没有http/https）
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                url = 'https://' + url;
+            }
+            webview.src = url;
+        });
+
+        // 回车访问
+        urlInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                goBtn.click();
+            }
+        });
+
+        // 点击常用网站项（图标+名称）
+        siteItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const url = item.dataset.url;
+                webview.src = url;
+                urlInput.value = url; // 同步显示到地址栏
+            });
+        });
+    </script>
+</body>
+</html>
