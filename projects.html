@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的项目</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: "Arial", sans-serif; background: #f5f5f5; color: #333; min-height: 100vh; }
+        .navbar { background: #4a6cf7; padding: 15px 20px; border-radius: 0 0 20px 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .logo { color: white; font-size: 22px; font-weight: bold; }
+        .nav-links { display: flex; gap: 25px; }
+        .nav-links a { color: white; text-decoration: none; padding: 8px 12px; border-radius: 15px; transition: background 0.3s; }
+        .nav-links a:hover { background: rgba(255,255,255,0.2); }
+        /* 项目内容 - 无图片布局 */
+        .projects-content { max-width: 600px; margin: 50px auto; padding: 0 20px; }
+        .projects-title { text-align: center; font-size: 32px; color: #4a6cf7; margin-bottom: 40px; }
+        .projects-list { display: grid; gap: 30px; }
+        .project-card { background: white; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); padding: 30px; transition: transform 0.3s; text-align: center; }
+        .project-card:hover { transform: translateY(-5px); }
+        .project-info h3 { font-size: 22px; margin-bottom: 25px; color: #333; }
+        .project-links { justify-content: center; }
+        .project-btn { padding: 10px 20px; background: #4a6cf7; color: white; text-decoration: none; border-radius: 12px; font-size: 16px; font-weight: bold; transition: background 0.3s; display: inline-block; }
+        .project-btn:hover { background: #3a5edb; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">我的主页</div>
+            <div class="nav-links">
+                <a href="index.html">首页</a>
+                <a href="contact.html">联系我</a>
+                <a href="projects.html">我的项目</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="projects-content">
+        <h2 class="projects-title">我的项目</h2>
+        <div class="projects-list">
+            <!-- 项目1：增强版文本加密工具（替换原双模式计算器） -->
+            <div class="project-card">
+                <div class="project-info">
+                    <h3>文本加密工具</h3>
+                    <div class="project-links">
+                        <a href="encrypt-tool.html" class="project-btn">在线使用</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 项目2：在线网页浏览器 -->
+            <div class="project-card">
+                <div class="project-info">
+                    <h3>在线网页浏览器</h3>
+                    <div class="project-links">
+                        <a href="browser.html" class="project-btn">立即使用</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
