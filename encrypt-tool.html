@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>文本加密工具</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: "Arial", sans-serif; background: #f8f9fa; min-height: 100vh; display: flex; flex-direction: column; }
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; margin-bottom: 20px; }
+        .exit-btn { padding: 8px 20px; background: #ff4d4f; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: 600; cursor: pointer; transition: all 0.3s; box-shadow: 0 2px 8px rgba(255,77,79,0.3); }
+        .exit-btn:hover { background: #d9363e; transform: translateY(-2px); }
+        .title { font-size: 24px; color: #333; font-weight: 600; }
+        .calculator-fullscreen { flex: 1; display: flex; flex-direction: column; max-width: 800px; margin: 0 auto; width: 100%; padding: 0 30px 30px; }
+        .subtitle { text-align: center; color: #666; font-size: 16px; margin-bottom: 30px; }
+        .input-area, .password-area, .output-area { margin-bottom: 20px; }
+        label { display: block; color: #333; font-size: 18px; margin-bottom: 10px; font-weight: 500; }
+        textarea, input[type="password"] { width: 100%; padding: 15px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; line-height: 1.5; resize: vertical; }
+        textarea { min-height: 150px; }
+        input[type="password"] { min-height: 50px; }
+        .btn-group { display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }
+        button { flex: 1; padding: 12px 0; border: none; border-radius: 8px; font-size: 18px; font-weight: 500; cursor: pointer; transition: all 0.3s; }
+        #encryptBtn { background-color: #4299e1; color: white; }
+        #encryptBtn:hover { background-color: #3182ce; transform: translateY(-2px); }
+        #decryptBtn { background-color: #10b981; color: white; }
+        #decryptBtn:hover { background-color: #059669; transform: translateY(-2px); }
+        #copyBtn { background-color: #f59e0b; color: white; }
+        #copyBtn:hover { background-color: #d97706; transform: translateY(-2px); }
+        .tip { text-align: center; color: #666; font-size: 14px; margin-top: 10px; line-height: 1.6; }
+        .warning { color: #ef4444; font-weight: 500; }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.2.0/crypto-js.min.js"></script>
+</head>
+<body>
+    <div class="header">
+        <button class="exit-btn" onclick="window.location.href='projects.html'">退出</button>
+        <div class="title">文本加密工具</div>
+    </div>
+    <div class="calculator-fullscreen">
+        <p class="subtitle">AES+Base64混合加密（安全性更高，需设置密码用于加密/解密）</p>
+        <div class="password-area">
+            <label for="password">加密/解密密码：</label>
+            <input type="password" id="password" placeholder="请设置8-16位密码（含字母+数字）..." required>
+        </div>
+        <div class="input-area">
+            <label for="inputText">输入文本：</label>
+            <textarea id="inputText" placeholder="请输入要加密或解密的文本..."></textarea>
+        </div>
+        <div class="btn-group">
+            <button id="encryptBtn">加密</button>
+            <button id="decryptBtn">解密</button>
+            <button id="copyBtn">复制结果</button>
+        </div>
+        <div class="output-area">
+            <label for="outputText">结果：</label>
+            <textarea id="outputText" placeholder="加密/解密结果将显示在这里..." readonly></textarea>
+        </div>
+        <div class="tip">
+            <span class="warning">重要提示：</span>1. 密码是解密关键，请牢记密码（丢失无法恢复）；2. 加密后的文本为Base64编码格式，可直接复制传输；3. 点击“退出”将返回项目页
+        </div>
+    </div>
+
+    <script>
+        const inputText = document.getElementById('inputText');
+        const password = document.getElementById('password');
+        const outputText = document.getElementById('outputText');
+        const encryptBtn = document.getElementById('encryptBtn');
+        const decryptBtn = document.getElementById('decryptBtn');
+        const copyBtn = document.getElementById('copyBtn');
+
+        const AES_CONFIG = {
+            mode: CryptoJS.mode.CBC,
+            padding: CryptoJS.pad.Pkcs7
+        };
+
+        function getKeyAndIv(pwd) {
+            const key = CryptoJS.SHA256(pwd).toString().substring(0, 32);
+            const iv = CryptoJS.MD5(pwd).toString().substring(0, 16);
+            return {
+                key: CryptoJS.enc.Utf8.parse(key),
+                iv: CryptoJS.enc.Utf8.parse(iv)
+            };
+        }
+
+        function encrypt(text, pwd) {
+            const { key, iv } = getKeyAndIv(pwd);
+            const encrypted = CryptoJS.AES.encrypt(text, key, {
+                iv: iv,
+                ...AES_CONFIG
+            });
+            return CryptoJS.enc.Base64.stringify(encrypted.ciphertext);
+        }
+
+        function decrypt(encryptedText, pwd) {
+            const { key, iv } = getKeyAndIv(pwd);
+            const ciphertext = CryptoJS.enc.Base64.parse(encryptedText);
+            const encrypted = CryptoJS.lib.CipherParams.create({ ciphertext: ciphertext });
+            const decrypted = CryptoJS.AES.decrypt(encrypted, key, {
+                iv: iv,
+                ...AES_CONFIG
+            });
+            return decrypted.toString(CryptoJS.enc.Utf8);
+        }
+
+        encryptBtn.addEventListener('click', () => {
+            const text = inputText.value.trim();
+            const pwd = password.value.trim();
+
+            if (!pwd) {
+                outputText.value = '请输入加密密码！';
+                return;
+            }
+            if (pwd.length < 8 || pwd.length > 16 || !/^(?=.*[a-zA-Z])(?=.*\d)/.test(pwd)) {
+                outputText.value = '密码格式错误！请输入8-16位含字母+数字的密码';
+                return;
+            }
+            if (!text) {
+                outputText.value = '请输入要加密的文本！';
+                return;
+            }
+
+            try {
+                const result = encrypt(text, pwd);
+                outputText.value = result;
+            } catch (err) {
+                outputText.value = '加密失败！请检查输入内容并重试';
+                console.error(err);
+            }
+        });
+
+        decryptBtn.addEventListener('click', () => {
+            const text = inputText.value.trim();
+            const pwd = password.value.trim();
+
+            if (!pwd) {
+                outputText.value = '请输入解密密码！';
+                return;
+            }
+            if (!text) {
+                outputText.value = '请输入要解密的文本！';
+                return;
+            }
+
+            try {
+                const result = decrypt(text, pwd);
+                if (!result) {
+                    outputText.value = '解密失败！密码错误或输入的不是加密文本';
+                    return;
+                }
+                outputText.value = result;
+            } catch (err) {
+                outputText.value = '解密失败！请检查输入内容和密码并重试';
+                console.error(err);
+            }
+        });
+
+        copyBtn.addEventListener('click', () => {
+   
