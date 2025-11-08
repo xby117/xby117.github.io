@@ -6,14 +6,13 @@
     <title>我的项目</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: "Arial", sans-serif; background: #f5f5f5; color: #333; min-height: 100vh; }
+        body { font-family: "Arial", sans-serif; background: #f5f5f5; color: #333; min-height: 100vh; position: relative; }
         .navbar { background: #4a6cf7; padding: 15px 20px; border-radius: 0 0 20px 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
         .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
         .logo { color: white; font-size: 22px; font-weight: bold; }
         .nav-links { display: flex; gap: 25px; }
         .nav-links a { color: white; text-decoration: none; padding: 8px 12px; border-radius: 15px; transition: background 0.3s; }
         .nav-links a:hover { background: rgba(255,255,255,0.2); }
-        /* 项目内容 - 无图片布局 */
         .projects-content { max-width: 600px; margin: 50px auto; padding: 0 20px; }
         .projects-title { text-align: center; font-size: 32px; color: #4a6cf7; margin-bottom: 40px; }
         .projects-list { display: grid; gap: 30px; }
@@ -23,6 +22,31 @@
         .project-links { justify-content: center; }
         .project-btn { padding: 10px 20px; background: #4a6cf7; color: white; text-decoration: none; border-radius: 12px; font-size: 16px; font-weight: bold; transition: background 0.3s; display: inline-block; }
         .project-btn:hover { background: #3a5edb; }
+        /* 完全嵌入背景：透明无干扰，hover时轻微凸显 */
+        .source-code-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 14px 28px;
+            background: transparent; /* 完全透明背景，彻底嵌入 */
+            backdrop-filter: blur(0); /* 取消毛玻璃，避免干扰背景 */
+            color: #4a6cf7;
+            border: none;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 17px;
+            font-weight: 600;
+            box-shadow: none; /* 移除阴影，消除边界感 */
+            transition: all 0.3s ease;
+            z-index: 999;
+            opacity: 0.7; /* 初始降低透明度，减少视觉干扰 */
+        }
+        .source-code-btn:hover {
+            background: rgba(74, 108, 247, 0.08); /* hover时轻微背景色，凸显按钮 */
+            opacity: 1; /* 完全显示文字 */
+            transform: translateY(-2px);
+            box-shadow: 0 2px 6px rgba(74,108,247,0.1); /* 轻微阴影增强层次感 */
+        }
     </style>
 </head>
 <body>
@@ -31,7 +55,6 @@
             <div class="logo">我的主页</div>
             <div class="nav-links">
                 <a href="index.html">首页</a>
-                <a href="contact.html">联系我</a>
                 <a href="projects.html">我的项目</a>
             </div>
         </div>
@@ -40,7 +63,6 @@
     <div class="projects-content">
         <h2 class="projects-title">我的项目</h2>
         <div class="projects-list">
-            <!-- 项目1：增强版文本加密工具（替换原双模式计算器） -->
             <div class="project-card">
                 <div class="project-info">
                     <h3>文本加密工具</h3>
@@ -49,8 +71,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- 项目2：在线网页浏览器 -->
             <div class="project-card">
                 <div class="project-info">
                     <h3>在线网页浏览器</h3>
@@ -61,5 +81,8 @@
             </div>
         </div>
     </div>
+
+    <!-- 嵌入背景的源代码按钮 -->
+    <a href="source-code.html" class="source-code-btn">查看项目源代码</a>
 </body>
 </html>
