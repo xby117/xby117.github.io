@@ -7,23 +7,31 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: "Arial", sans-serif; background: #f5f5f5; color: #333; min-height: 100vh; }
-        .navbar { background: #4a6cf7; padding: 15px 20px; border-radius: 0 0 20px 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
-        .logo { color: white; font-size: 22px; font-weight: bold; }
-        .nav-links { display: flex; gap: 25px; }
-        .nav-links a { color: white; text-decoration: none; padding: 8px 12px; border-radius: 15px; transition: background 0.3s; }
-        .nav-links a:hover { background: rgba(255,255,255,0.2); }
-        /* 联系我内容 - 简化布局 */
-        .contact-content { max-width: 600px; margin: 80px auto; padding: 0 20px; }
+        /* 仅保留退出键 - 无导航栏 */
+        .exit-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 8px 16px;
+            background: #4a6cf7;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+            z-index: 999;
+        }
+        .exit-btn:hover { background: #3a5bd9; }
+        /* 联系我内容 */
+        .contact-content { max-width: 600px; margin: 120px auto; padding: 0 20px; }
         .contact-title { font-size: 32px; color: #333; margin-bottom: 40px; text-align: center; }
-        .contact-card { background: white; border-radius: 20px; padding: 40px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        .contact-item { display: flex; align-items: flex-start; gap: 15px; margin-bottom: 30px; }
-        .contact-item:last-child { margin-bottom: 0; }
-        .contact-info h4 { font-size: 18px; margin-bottom: 5px; color: #333; }
-        .contact-info p { font-size: 16px; color: #666; }
+        .contact-card { background: white; border-radius: 20px; padding: 40px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); text-align: center; }
+        .contact-info h4 { font-size: 18px; margin-bottom: 15px; color: #333; }
+        .contact-info p { font-size: 18px; color: #4a6cf7; }
         .contact-info a { color: #4a6cf7; text-decoration: none; cursor: pointer; }
         .contact-info a:hover { text-decoration: underline; }
-        .contact-footer { text-align: center; margin-top: 30px; font-size: 14px; color: #999; }
         /* 复制成功弹窗样式 */
         .copy-toast {
             position: fixed;
@@ -40,39 +48,20 @@
             transition: opacity 0.3s ease;
             z-index: 9999;
         }
-        .copy-toast.show {
-            opacity: 1;
-        }
+        .copy-toast.show { opacity: 1; }
     </style>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="logo">我的主页</div>
-            <div class="nav-links">
-                <a href="index.html">首页</a>
-                <a href="contact.html">联系我</a>
-                <a href="projects.html">我的项目</a>
-            </div>
-        </div>
-    </nav>
+    <!-- 仅保留退出键 - 点击返回首页 -->
+    <button class="exit-btn" onclick="window.location.href='index.html'">退出</button>
 
     <div class="contact-content">
         <h2 class="contact-title">联系我</h2>
         <div class="contact-card">
-            <!-- 电子邮箱（可点击复制） -->
-            <div class="contact-item">
-                <div class="contact-info">
-                    <h4>电子邮箱</h4>
-                    <p><a id="emailLink">M468426173@hotmail.com</a></p>
-                </div>
-            </div>
-            <!-- 修改后的 GitHub 联系方式 -->
-            <div class="contact-item">
-                <div class="contact-info">
-                    <h4>GitHub</h4>
-                    <p><a href="https://github.com/your-new-username" target="_blank">https://github.com/xby117</a></p>
-                </div>
+            <!-- 仅保留电子邮箱（可点击复制） -->
+            <div class="contact-info">
+                <h4>电子邮箱</h4>
+                <p><a id="emailLink">M468426173@hotmail.com</a></p>
             </div>
         </div>
     </div>
@@ -81,14 +70,12 @@
     <div class="copy-toast" id="copyToast">复制成功！</div>
 
     <script>
-        // 获取元素
+        // 邮箱复制功能
         const emailLink = document.getElementById('emailLink');
         const copyToast = document.getElementById('copyToast');
-        const email = emailLink.textContent; // 获取邮箱地址
+        const email = emailLink.textContent;
 
-        // 点击邮箱触发复制
         emailLink.addEventListener('click', () => {
-            // 创建临时输入框用于复制
             const tempInput = document.createElement('input');
             tempInput.value = email;
             document.body.appendChild(tempInput);
@@ -96,13 +83,8 @@
             document.execCommand('copy');
             document.body.removeChild(tempInput);
 
-            // 显示弹窗
             copyToast.classList.add('show');
-
-            // 1.5秒后关闭弹窗
-            setTimeout(() => {
-                copyToast.classList.remove('show');
-            }, 1500);
+            setTimeout(() => copyToast.classList.remove('show'), 1500);
         });
     </script>
 </body>
