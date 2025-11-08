@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>项目源代码</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: "Arial", sans-serif; background: #f5f5f5; color: #333; line-height: 1.6; }
+        .source-content { max-width: 1200px; margin: 50px auto; padding: 0 20px; }
+        .source-title { text-align: center; font-size: 32px; color: #4a6cf7; margin-bottom: 40px; }
+        .source-card { background: white; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); padding: 30px; margin-bottom: 30px; }
+        .source-card h3 { font-size: 20px; color: #4a6cf7; margin-bottom: 20px; border-left: 4px solid #4a6cf7; padding-left: 15px; }
+        /* 代码块容器：相对定位，用于承载右上角复制按钮 */
+        .code-container { 
+            position: relative; 
+            margin-top: 40px;
+        }
+        .code-block { 
+            background: #2d3748; 
+            border-radius: 12px; 
+            padding: 20px; 
+            overflow-x: auto; 
+            font-family: "Courier New", monospace; 
+            font-size: 14px; 
+            color: #e2e8f0; 
+            white-space: pre-wrap; 
+            word-break: break-all;
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 10px;
+        }
+        /* 代码块右上角复制按钮：小图标样式 */
+        .copy-btn {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            width: 32px;
+            height: 32px;
+            background: #4a6cf7;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            transition: all 0.2s;
+            z-index: 10;
+        }
+        .copy-btn:hover {
+            background: #3a5edb;
+            transform: scale(1.05);
+        }
+        .copy-btn i {
+            color: white;
+            font-size: 16px;
+        }
+        /* 弹窗样式 */
+        .copy-toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #10b981;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.3s ease;
+        }
+        .copy-toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .back-btn { 
+            display: block; 
+            width: 200px; 
+            margin: 0 auto 40px auto; 
+            padding: 12px 0; 
+            background: #4a6cf7; 
+            color: white; 
+            text-align: center; 
+            text-decoration: none; 
+            border-radius: 15px; 
+            font-weight: bold; 
+            transition: background 0.3s; 
+        }
+        .back-btn:hover { background: #3a5edb; }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="source-content">
+        <a href="projects.html" class="back-btn">返回项目页</a>
+        <h2 class="source-title">项目源代码查看</h2>
+        
+        <!-- 文本加密工具完整源代码 -->
+        <div class="source-card">
+            <h3>文本加密工具（encrypt-tool.html）</h3>
+            <div class="code-container">
+                <button class="copy-btn" onclick="copyCode(this)">
+                    <i class="far fa-copy"></i>
+                </button>
+                <pre class="code-block" id="encrypt-code">
+                &lt;!DOCTYPE html&gt;
+&lt;html lang="zh-CN"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"&gt;
+    &lt;title&gt;文本加密工具&lt;/title&gt;
+    &lt;style&gt;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: "Arial", sans-serif; background: #f8f9fa; min-height: 100vh; display: flex; flex-direction: column; }
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; margin-bottom: 20px; }
+        .exit-btn { padding: 8px 20px; background: #ff4d4f; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: 600; cursor: pointer; transition: all 0.3s; box-shadow: 0 2px 8px rgba(255,77,79,0.3); }
+        .exit-btn:hover { background: #d9363e; transform: translateY(-2px); }
+        .title { font-size: 24px; color: #333; font-weight: 600; }
+        .calculator-fullscreen { flex: 1; display: flex; flex-direction: column; max-width: 800px; margin: 0 auto; width: 100%; padding: 0 30px 30px; }
+        .subtitle { text-align: center; color: #666; font-size: 16px; margin-bottom: 30px; }
+        .input-area, .password-area, .output-area { margin-bottom: 20px; }
+        label { display: block; color: #333; font-size: 18px; margin-bottom: 10px; font-weight: 500; }
+        textarea, input[type="password"] { width: 100%; padding: 15px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; line-height: 1.5; resize: vertical; }
+        textarea { min-height: 150px; }
+        input[type="password"] { min-height: 50px; }
+        .btn-group { display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }
+        button { flex: 1; padding: 12px 0; border: none; border-radius: 8px; font-size: 18px; font-weight: 500; cursor: pointer; transition: all 0.3s; }
+        #encryptBtn { background-color: #4299e1; color: white; }
+        #encryptBtn:hover { background-color: #3182ce; transform: translateY(-2px); }
+        #decryptBtn { background-color: #10b981; color: white; }
+        #decryptBtn:hover { background-color: #059669; transform: translateY(-2px); }
+        #copyBtn { background-color: #f59e0b; color: white; }
+        #copyBtn:hover { background-color: #d97706; transform: translateY(-2px); }
+        .tip { text-align: center; color: #666; font-size: 14px; margin-top: 10px; line-height: 1.6; }
+        .warning { color: #ef4444; font-weight: 500; }
+    &lt;/style&gt;
+    &lt;script src="https://cdn.jsdelivr.net/npm/crypto-js@4.2.0/crypto-js.min.js"&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="header"&gt;
+        &lt;button class="exit-btn" onclick="window.location.href='projects.html'"&gt;退出&lt;/button&gt;
+        &lt;div class="title"&gt;文本加密工具&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="calculator-fullscreen"&gt;
+        &lt;p class="subtitle"&gt;AES+Base64混合加密（安全性更高，需设置密码用于加密/解密）&lt;/p&gt;
+        &lt;div class="password-area"&gt;
+            &lt;label for="password"&gt;加密/解密密码：&lt;/label&gt;
+            &lt;input type="password" id="password" placeholder="请设置8-16位密码（含字母+数字）..." required&gt;
+        &lt;/div&gt;
+        &lt;div class="input-area"&gt;
+            &lt;label for="inputText"&gt;输入文本：&lt;/label&gt;
+            &lt;textarea id="inputText" placeholder="请输入要加密或解密的文本..."&gt;&lt;/textarea&gt;
+        &lt;/div&gt;
+        &lt;div class="btn-group"&gt;
+            &lt;button id="encryptBtn"&gt;加密&lt;/button&gt;
+            &lt;button id="decryptBtn"&gt;解密&lt;/button&gt;
+            &lt;button id="copyBtn"&gt;复制结果&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div class="output-area"&gt;
+            &lt;label for="outputText"&gt;结果：&lt;/label&gt;
+            &lt;textarea id="outputText" placeholder="加密/解密结果将显示在这里..." readonly&gt;&lt;/textarea&gt;
+        &lt;/div&gt;
+        &lt;div class="tip"&gt;
+            &lt;span class="warning"&gt;重要提示：&lt;/span&gt;1. 密码是解密关键，请牢记密码（丢失无法恢复）；2. 加密后的文本为Base64编码格式，可直接复制传输；3. 点击"退出"将返回项目页
+        &lt;/div&gt;
+    &lt;/div&gt;
+        &lt;script&gt;
+        const inputText = document.getElementById('inputText');
+        const password = document.getElementById('password');
+        const outputText = document.getElementById('outputText');
+        const encryptBtn = document.getElementById('encryptBtn');
+        const decryptBtn = document.getElementById('decryptBtn');
+        const copyBtn = document.getElementById('copyBtn');
+
+        const AES_CONFIG = {
+            mode: CryptoJS.mode.CBC,
+            padding: CryptoJS.pad.Pkcs7
+        };
+
+        function getKeyAndIv(pwd) {
+            const key = CryptoJS.SHA256(pwd).toString().substring(0, 32);
+            const iv = CryptoJS.MD5(pwd).toString().substring(0, 16);
+            return {
+                key: CryptoJS.enc.Utf8.parse(key),
+                iv: CryptoJS.enc.Utf8.parse(iv)
+            };
+        }
+
+        function encrypt(text, pwd) {
+            const { key, iv } = getKeyAndIv(pwd);
+            const encrypted = CryptoJS.AES.encrypt(text, key, {
+                iv: iv,
+                ...AES_CONFIG
+            });
+            return CryptoJS.enc.Base64.stringify(encrypted.ciphertext);
+        }
+
+        function decrypt(encryptedText, pwd) {
+            const { key, iv } = getKeyAndIv(pwd);
+            const ciphertext = CryptoJS.enc.Base64.parse(encryptedText);
+            const encrypted = CryptoJS.lib.CipherParams.create({ ciphertext: ciphertext });
+            const decrypted = CryptoJS.AES.decrypt(encrypted, key, {
+                iv: iv,
+                ...AES_CONFIG
+            });
+            return decrypted.toString(CryptoJS.enc.Utf8);
+        }
+
+        encryptBtn.addEventListener('click', () => {
+            const text = inputText.value.trim();
+            const pwd = password.value.trim();
+
+            if (!pwd) {
+                outputText.value = '请输入加密密码！';
+                return;
+            }
+            if (pwd.length &lt; 8 || pwd.length &gt; 16 || !/^(?=.*[a-zA-Z])(?=.*\d)/.test(pwd)) {
+                outputText.value = '密码格式错误！请输入8-16位含字母+数字的密码';
+                return;
+            }
+            if (!text) {
+                outputText.value = '请输入要加密的文本！';
+                return;
+            }
+
+            try {
+                const result = encrypt(text, pwd);
+                outputText.value = result;
+            } catch (err) {
+                outputText.value = '加密失败！请检查输入内容并重试';
+                console.error(err);
+            }
+        });
+
+        decryptBtn.addEventListener('click', () => {
+            const text = inputText.value.trim();
+            const pwd = password.value.trim();
+
+            if (!pwd) {
+                outputText.value = '请输入解密密码！';
+                return;
+            }
+            if (!text) {
+                outputText.value = '请输入要解密的文本！';
+                return;
+            }
+
+            try {
+                const result = decrypt(text, pwd);
+                if (!result) {
+                    outputText.value = '解密失败！密码错误或输入的不是加密文本';
+                    return;
+                }
+                outputText.value = result;
+            } catch (err) {
+                outputText.value = '解密失败！请检查输入内容和密码并重试';
+                console.error(err);
+            }
+        });
+
+        copyBtn.addEventListener('click', () => {
+            const result = outputText.value.trim();
+            if (!result) {
+                alert('没有可复制的结果！');
+                return;
+            }
+            outputText.select();
+            document.execCommand('copy');
+            alert('结果已复制到剪贴板！');
+        });
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+                </pre>
+            </div>
+        </div>
+        <!-- 在线网页浏览器完整源代码 -->
+<div class="source-card">
+    <h3>在线网页浏览器（browser.html）</h3>
+    <div class="code-container">
+        <button class="copy-btn" onclick="copyCode(this)">
+            <i class="far fa-copy"></i>
+        </button>
+        <pre class="code-block" id="browser-code">
+        &lt;!DOCTYPE html&gt;
+&lt;html lang="zh-CN"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;在线网页浏览器&lt;/title&gt;
+    &lt;style&gt;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: "Arial", sans-serif; background: #f8f9fa; min-height: 100vh; display: flex; flex-direction: column; }
+        .browser-container { flex: 1; max-width: 1200px; margin: 0 auto; width: 100%; padding: 30px; }
+        .browser-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .exit-btn { padding: 10px 20px; background: #ff4d4f; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: 600; cursor: pointer; transition: all 0.3s; box-shadow: 0 2px 8px rgba(255,77,79,0.3); }
+        .exit-btn:hover { background: #d9363e; transform: translateY(-2px); }
+        .browser-title { font-size: 24px; color: #333; font-weight: 600; }
+        .address-bar { display: flex; gap: 10px; margin-bottom: 20px; }
+        #urlInput { flex: 1; padding: 12px 20px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; outline: none; }
+        #urlInput:focus { border-color: #4a6cf7; box-shadow: 0 0 0 2px rgba(74,108,247,0.1); }
+        #goBtn { padding: 12px 24px; background: #4a6cf7; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: background 0.3s; }
+        #goBtn:hover { background: #3a5edb; }
+        .popular-sites { margin-bottom: 20px; }
+        .sites-title { font-size: 18px; color: #666; margin-bottom: 15px; }
+        .sites-list { display: flex; flex-wrap: wrap; gap: 25px; justify-content: center; }
+        .site-item { display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; width: 80px; }
+        .site-icon { width: 60px; height: 60px; border-radius: 50%; background: white; display: flex; align-items: center; justify-content: center; border: 1px solid #ddd; transition: all 0.3s; }
+        .site-icon img { width: 32px; height: 32px; object-fit: contain; }
+        .site-name { font-size: 14px; color: #333; text-align: center; }
+        .site-item:hover .site-icon { border-color: #4a6cf7; background: #f5f9ff; transform: translateY(-3px); }
+        .webview-container { width: 100%; height: calc(100vh - 220px); border: 1px solid #ddd; border-radius: 12px; overflow: hidden; background: white; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
+        #webview { width: 100%; height: 100%; border: none; }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="browser-container"&gt;
+        &lt;div class="browser-header"&gt;
+            &lt;button class="exit-btn" onclick="window.location.href='projects.html'"&gt;退出&lt;/button&gt;
+            &lt;div class="browser-title"&gt;在线网页浏览器&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="address-bar"&gt;
+            &lt;input type="text" id="urlInput" placeholder="请输入网址（例如：https://www.baidu.com）" autocomplete="off"&gt;
+            &lt;button id="goBtn"&gt;访问&lt;/button&gt;
+        &lt;/div&gt;
+            &lt;div class="popular-sites"&gt;
+        &lt;div class="sites-title"&gt;常用网站：&lt;/div&gt;
+        &lt;div class="sites-list"&gt;
+            &lt;div class="site-item" data-url="https://www.baidu.com"&gt;
+                &lt;div class="site-icon"&gt;
+                    &lt;img src="https://www.baidu.com/favicon.ico" alt="百度图标"&gt;
+                &lt;/div&gt;
+                &lt;div class="site-name"&gt;百度&lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class="site-item" data-url="https://www.bilibili.com"&gt;
+                &lt;div class="site-icon"&gt;
+                    &lt;img src="https://www.bilibili.com/favicon.ico" alt="B站图标"&gt;
+                &lt;/div&gt;
+                &lt;div class="site-name"&gt;哔哩哔哩&lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class="site-item" data-url="https://www.taobao.com"&gt;
+                &lt;div class="site-icon"&gt;
+                    &lt;img src="https://www.taobao.com/favicon.ico" alt="淘宝图标"&gt;
+                &lt;/div&gt;
+                &lt;div class="site-name"&gt;淘宝&lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class="site-item" data-url="https://www.iqiyi.com"&gt;
+                &lt;div class="site-icon"&gt;
+                    &lt;img src="https://www.iqiyi.com/favicon.ico" alt="爱奇艺图标"&gt;
+                &lt;/div&gt;
+                &lt;div class="site-name"&gt;爱奇艺&lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class="site-item" data-url="https://www.weibo.com"&gt;
+                &lt;div class="site-icon"&gt;
+                    &lt;img src="https://www.weibo.com/favicon.ico" alt="微博图标"&gt;
+                &lt;/div&gt;
+                &lt;div class="site-name"&gt;微博&lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class="site-item" data-url="https://www.163.com"&gt;
+                &lt;div class="site-icon"&gt;
+                    &lt;img src="https://www.163.com/favicon.ico" alt="网易图标"&gt;
+                &lt;/div&gt;
+                &lt;div class="site-name"&gt;网易&lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="webview-container"&gt;
+        &lt;iframe id="webview" src="https://www.baidu.com"&gt;&lt;/iframe&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+    &lt;script&gt;
+        const urlInput = document.getElementById('urlInput');
+        const goBtn = document.getElementById('goBtn');
+        const webview = document.getElementById('webview');
+        const siteItems = document.querySelectorAll('.site-item');
+        goBtn.addEventListener('click', () => {
+            let url = urlInput.value.trim();
+            if (!url) return;
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                url = 'https://' + url;
+            }
+            webview.src = url;
+        });
+        urlInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                goBtn.click();
+            }
+        });
+        siteItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const url = item.dataset.url;
+                webview.src = url;
+                urlInput.value = url;
+            });
+        });
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+                </pre>
+            </div>
+        </div>
+        <script>
+    // 复制代码功能：点击按钮复制对应代码块内容
+    function copyCode(btn) {
+        const codeBlock = btn.nextElementSibling;
+        const code = codeBlock.textContent.trim();
+        
+        // 创建临时textarea元素
+        const textArea = document.createElement('textarea');
+        textArea.value = code;
+        document.body.appendChild(textArea);
+        textArea.select();
+        
+        try {
+            // 执行复制命令
+            const successful = document.execCommand('copy');
+            if (successful) {
+                showToast('代码已复制到剪贴板！');
+            } else {
+                showToast('复制失败，请手动复制');
+            }
+        } catch (err) {
+            showToast('复制失败：' + err.message);
+        }
+        
+        // 清理临时元素
+        document.body.removeChild(textArea);
+    }
+    
+    // 显示弹窗提示
+    function showToast(message) {
+        // 移除已存在的弹窗
+        const existingToast = document.querySelector('.copy-toast');
+        if (existingToast) {
+            existingToast.remove();
+        }
+        
+        // 创建新弹窗
+        const toast = document.createElement('div');
+        toast.className = 'copy-toast';
+        toast.innerHTML = `
+            <i class="fas fa-check-circle"></i>
+            <span>${message}</span>
+        `;
+        
+        document.body.appendChild(toast);
+        
+        // 显示弹窗
+        setTimeout(() => {
+            toast.classList.add('show');
+        }, 10);
+        
+        // 1.5秒后隐藏并移除弹窗
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.parentNode.removeChild(toast);
+                }
+            }, 300);
+        }, 1500);
+    }
+</script>
+</body>
+</html>
